@@ -33,7 +33,7 @@ app.post("/api/files", upload.single("file"), async (req, res) => {
     //convert buffer to string
     const csvResult = Buffer.from(file.buffer).toString("utf-8");
     //convert string to json
-    const jsonResult = csvToJson.csvStringToJson(csvResult);
+    const jsonResult = csvToJson.fieldDelimiter(",").csvStringToJson(csvResult);
     console.log(jsonResult);
     //5. save the json to db (or memory)
     userData = jsonResult;
