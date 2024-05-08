@@ -3,7 +3,7 @@ import "./App.css";
 import { uploadFile } from "./services/upload";
 import { Toaster, toast } from "sonner";
 import { Data } from "./types";
-import Search from "./Search";
+import { Search } from "./Search";
 
 //States for actions management in ui
 const APP_STATUS = {
@@ -61,7 +61,6 @@ function App() {
   const showButton =
     status === APP_STATUS.READY_UPLOAD || status === APP_STATUS.UPLOADING;
   const showInput = status != APP_STATUS.READY_USAGE;
-  const showSearch = status === APP_STATUS.READY_USAGE;
 
   return (
     <>
@@ -86,7 +85,7 @@ function App() {
           </div>
         </form>
       )}
-      {showSearch && <Search initialData={data} />}
+      {status === APP_STATUS.READY_USAGE && <Search initialData={data} />}
     </>
   );
 }

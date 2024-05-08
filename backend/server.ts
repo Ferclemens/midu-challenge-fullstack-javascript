@@ -47,7 +47,7 @@ app.post("/api/files", upload.single("file"), async (req, res) => {
     .json({ data: userData, message: "el archivo se cargo correctamente" });
 });
 
-app.get("/api/user", async (req, res) => {
+app.get("/api/users", async (req, res) => {
   //1. extract the query param 'q' from the request
   const { q } = req.query;
   //2. validate that we have the query param

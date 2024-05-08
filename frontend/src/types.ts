@@ -4,3 +4,7 @@ export type apiUploadResponse = {
   message: string;
   data: Data;
 };
+
+export type apiSearchResponse = {
+  data: Data;
+};
