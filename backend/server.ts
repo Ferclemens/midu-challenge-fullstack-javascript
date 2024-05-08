@@ -33,7 +33,7 @@ app.post("/api/files", upload.single("file"), async (req, res) => {
     //convert buffer to string
     const csvResult = Buffer.from(file.buffer).toString("utf-8");
     //convert string to json
-    const jsonResult = csvToJson.csvStringToJson(csvResult);
+    const jsonResult = csvToJson.fieldDelimiter(",").csvStringToJson(csvResult);
     console.log(jsonResult);
     //5. save the json to db (or memory)
     userData = jsonResult;
@@ -47,17 +47,24 @@ app.post("/api/files", upload.single("file"), async (req, res) => {
     .json({ data: userData, message: "el archivo se cargo correctamente" });
 });
 
-app.get("/api/user", async (req, res) => {
+app.get("/api/users", async (req, res) => {
   //1. extract the query param 'q' from the request
   const { q } = req.query;
   //2. validate that we have the query param
   if (!q) {
-    res.status(500).json({ message: "query param q is required" });
+    return res.status(500).json({ message: "query param q is required" });
   }
+  //validate if it is only strings
   if (Array.isArray(q)) {
-    res.status(500).json({ message: "q param must be a string" });
+    return res.status(500).json({ message: "q param must be a string" });
   }
   //3. filter the data from the db (or memory) with the query param
+  const search = q?.toString().toLowerCase();
+  const filteredData = userData.filter((row) => {
+    return Object.values(row).some((value) =>
+      value.toLowerCase().includes(search)
+    );
+  });
   //4. return 200 with the filtered data
-  return res.status(200).json({ data: [] });
+  return res.status(200).json({ data: filteredData });
 });
